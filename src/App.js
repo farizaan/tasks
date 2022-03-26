@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import React, { useState, useEffect } from "react";
+// import { CommentBlock } from "./components/CommentBlock";
+import { fetchTopTracks } from "./fetchers/fetchTopTracks";
+import { Table } from "./components/Table";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [topTracks, setTopTracks] = useState([]);
+	
+	useEffect(() => {
+		fetchTopTracks().then((res) => {
+      console.log(res.toptracks)
+			setTopTracks(res.toptracks.track);
+		});
+
+		// fetch(
+		// 	"https://kdwed-f1dd2-default-rtdb.europe-west1.firebasedatabase.app/comments.json"
+		// )
+		// 	.then((res) => res.json())
+		// 	.then(
+		// 		(result) => {
+		// 			console.log("data", result);
+		// 			setComments(result);
+		// 			//  result.answers && result.answers.length > 0 ? setAnswers(result.answers) : setAnswers([])
+		// 		},
+		// 		(error) => {}
+		// 	);
+	}, []);
+	return (
+		<div className="App">
+			<Table tracks={topTracks} />
+		</div>
+	);
 }
 
 export default App;
