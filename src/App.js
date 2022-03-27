@@ -1,33 +1,23 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 // import { CommentBlock } from "./components/CommentBlock";
-import { fetchTopTracks } from "./fetchers/fetchTopTracks";
-import { Table } from "./components/Table";
+import { Routes, Route, Link } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { Fibonacci } from "./components/Fibonacci";
+import { Factorial } from "./components/Factorial";
+import { Movies } from "./pages/Movies";
 function App() {
-	const [topTracks, setTopTracks] = useState([]);
-	
-	useEffect(() => {
-		fetchTopTracks().then((res) => {
-      console.log(res.toptracks)
-			setTopTracks(res.toptracks.track);
-		});
-
-		// fetch(
-		// 	"https://kdwed-f1dd2-default-rtdb.europe-west1.firebasedatabase.app/comments.json"
-		// )
-		// 	.then((res) => res.json())
-		// 	.then(
-		// 		(result) => {
-		// 			console.log("data", result);
-		// 			setComments(result);
-		// 			//  result.answers && result.answers.length > 0 ? setAnswers(result.answers) : setAnswers([])
-		// 		},
-		// 		(error) => {}
-		// 	);
-	}, []);
 	return (
 		<div className="App">
-			<Table tracks={topTracks} />
+			<Navbar />
+			{/* <nav className="nav">
+				<Link to="/">Fibonacci</Link>
+				<Link to="/fib">Factorial</Link>
+			</nav> */}
+			<Routes>
+				<Route path="/" element={<Movies />} />
+				<Route path="/about" element={<Fibonacci />} />
+			</Routes>
 		</div>
 	);
 }

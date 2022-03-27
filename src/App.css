@@ -1,7 +1,15 @@
 .App {
-	padding: 10px;
-	width: 60%;
 }
+.nav {
+	margin-top: 10px;
+}
+.nav a {
+	margin-right: 5px;
+}
+a {
+	text-decoration: none;
+}
+/* }
 table {
 	font-family: "Ubuntu";
 	font-style: normal;
@@ -64,7 +72,7 @@ tbody tr:nth-child(odd) {
 }
 #link {
 	width: 10%;
-}
+} */
 /* .commentBlock {
 	border: 1px solid #d7d7d7;
 	box-sizing: border-box;
