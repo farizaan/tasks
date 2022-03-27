@@ -1,5 +1,4 @@
 import { TableRow } from "./TableRow"
-import{ useState } from "react";
 
 export function Table({tracks=[]}){
     

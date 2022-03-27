@@ -11,7 +11,7 @@ export function TableRow({track}) {
 			<td className="track_title">{track.name}</td>
 			<td className="grey_text">{track.artist.name}</td>
 			<td className="grey_text"></td>
-			<td className="url"><a href={track.url} target="_blank">Shazam</a></td>
+			<td className="url"><a href={track.url} target="_blank" rel="noreferrer">Shazam</a></td>
 		</tr>
 	);
 }
