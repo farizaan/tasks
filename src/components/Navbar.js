@@ -45,7 +45,7 @@ const Navbar = () => {
 	};
 	const navigate = useNavigate();
 	return (
-		<AppBar position="static" sx={{ marginBottom: 5 }}>
+		<AppBar position="static" >
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
 					<Typography

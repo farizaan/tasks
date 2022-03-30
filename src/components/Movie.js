@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
-
-function Stars({ n }) {
+import {useNavigate } from "react-router-dom";
+export function Stars({ n = 0}) {
 	let stars = [];
 	for (let i = 0; i < n; ++i) {
 		stars.push(<StarIcon key={i} sx={{ color: "#fff", fontSize: 13 }} />);
@@ -11,14 +11,15 @@ function Stars({ n }) {
 export function Movie({ movie }) {
 	const styles = {
 		cardStyle: {
-			width: 292,
+			width: "100%",
 			height: 440,
 			backgroundImage: `linear-gradient(180deg, rgba(29, 29, 29, 0) 0%, rgba(29, 29, 29, 0.8) 80.79%), url(https://image.tmdb.org/t/p/original${movie.poster_path})`,
 			backgroundSize: "cover",
 			backgroundRepeat: "no-repeat",
-			marginRight: 16,
-			marginBottom: 27,
+			
 			borderRadius: 0,
+			display: "flex",
+			flexDirection: "column-reverse"
 		},
 		genre: {
 			fontSize: 14,
@@ -30,6 +31,7 @@ export function Movie({ movie }) {
 			fontWeight: 500,
 			fontSize: 24,
 			color: "#FFFFFF",
+		
 		},
 	};
 	function convertVote(vote) {
@@ -49,9 +51,11 @@ export function Movie({ movie }) {
 				return "Comedy";
 		}
 	}
+
+	const navigate = useNavigate();
 	return (
-		<Card style={styles.cardStyle} className="card_block">
-			<CardContent sx={{ paddingTop: "316px" }}>
+		<Card onClick={() => navigate(`/movies/${movie.id}`)} style={styles.cardStyle} className="card_block">
+			<CardContent>
 				<Typography style={styles.genre}>
 					{getGenreById(movie.genre_ids[0])}
 				</Typography>

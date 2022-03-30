@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { Fibonacci } from "./components/Fibonacci";
 import { Factorial } from "./components/Factorial";
 import { Movies } from "./pages/Movies";
+import { MoviePage } from "./pages/MoviePage";
 function App() {
 	return (
 		<div className="App">
@@ -16,6 +17,7 @@ function App() {
 			</nav> */}
 			<Routes>
 				<Route path="/" element={<Movies />} />
+				<Route path="/movies/:movieId" element={<MoviePage />} />
 				<Route path="/about" element={<Fibonacci />} />
 			</Routes>
 		</div>
