@@ -7,20 +7,35 @@ import { Fibonacci } from "./components/Fibonacci";
 import { Factorial } from "./components/Factorial";
 import { Movies } from "./pages/Movies";
 import { MoviePage } from "./pages/MoviePage";
+import { Characters } from "./pages/rickandmorty/Characters";
+import { QueryClientProvider, QueryClient } from "react-query";
+import { CharacterPage } from "./pages/rickandmorty/CharacterPage";
+import { SignInPage } from "./pages/SignInPage";
+import { Auth } from "./context/Auth";
+const queryClient = new QueryClient();
 function App() {
+
+	const [token, setToken] = useState(localStorage.getItem("idToken"));
 	return (
-		<div className="App">
-			<Navbar />
-			{/* <nav className="nav">
-				<Link to="/">Fibonacci</Link>
-				<Link to="/fib">Factorial</Link>
-			</nav> */}
-			<Routes>
-				<Route path="/" element={<Movies />} />
-				<Route path="/movies/:movieId" element={<MoviePage />} />
-				<Route path="/about" element={<Fibonacci />} />
-			</Routes>
-		</div>
+		<Auth.Provider value={{ token,setToken }}>
+			<div className="App">
+				<QueryClientProvider client={queryClient}>
+					<Navbar />
+				
+					<Routes>
+						<Route path="/" element={<Movies />} />
+						<Route path="/movies" element={<Movies />} />
+						<Route path="/movies/:movieId" element={<MoviePage />} />
+						<Route path="/rickandmorty" element={<Characters />} />
+						<Route
+							path="/rickandmorty/:characterId"
+							element={<CharacterPage />}
+						/>
+						<Route path="/signin" element={<SignInPage />} />
+					</Routes>
+				</QueryClientProvider>
+			</div>
+		</Auth.Provider>
 	);
 }
 
