@@ -5,7 +5,6 @@ import styled from "@emotion/styled";
 import Container from "@mui/material/Container";
 import { Stars } from "../components/Movie";
 import { Movie } from "../components/Movie";
-import Grid from "@mui/material/Grid";
 
 const Banner = styled("div")`
 	width: 100%;

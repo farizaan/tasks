@@ -19,7 +19,8 @@ export function Movie({ movie }) {
 			
 			borderRadius: 0,
 			display: "flex",
-			flexDirection: "column-reverse"
+			flexDirection: "column-reverse",
+			pointer: "cursor"
 		},
 		genre: {
 			fontSize: 14,
