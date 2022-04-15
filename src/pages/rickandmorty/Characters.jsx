@@ -8,6 +8,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import { request, gql } from "graphql-request";
 
 const StyledPagination = styled(Pagination)`
 	color: #fff;
@@ -55,6 +56,64 @@ const StyledSelect = styled(Select)`
 		border-color: grey !important;
 	}
 `;
+
+const GET_CHARACTERS = gql`
+query($page: Int!, $query: String!, $status: String!) {
+	characters(page: $page, filter: { name: $query, status: $status }) {
+	  info {
+		count
+		pages
+	  }
+	  results {
+		name
+		status
+		species
+		type
+		origin {
+			name
+		}
+		image
+		location {
+			name
+		}
+	  }
+	}
+	location(id: 1) {
+	  id
+	}
+	episodesByIds(ids: [1, 2]) {
+	  id
+	}
+  }
+
+`;
+
+const GET_CHARACTER = gql`
+	query ($id: ID) {
+		characters(id: $id) {
+			info {
+				count
+				pages
+			}
+			results {
+				name
+				status
+				species
+				type
+				origin {
+					name
+				}
+				image
+			}
+		}
+		location(id: 1) {
+			id
+		}
+		episodesByIds(ids: [1, 2]) {
+			id
+		}
+	}
+`;
 export function Characters() {
 	const [page, setPage] = useState(1);
 	const [query, setQuery] = useState("");
@@ -75,6 +134,18 @@ export function Characters() {
 		},
 	];
 
+	// const useGQLQuery = (key, query, variable, config = {}) => {
+	// 	const endpoint = "https://rickandmortyapi.com/graphql";
+
+	// 	const fetchData = async () => await request(endpoint, query, variable);
+
+	// 	return useQuery(key, fetchData, config);
+	// };
+
+	// const { data, status, refetch } = useGQLQuery("characters", GET_CHARACTERS, {page: page, query: query, status: filterByStatus});
+
+
+	// react query
 	async function fetchCharacters(page = 1, filterStatus) {
 		console.log(filterStatus);
 		let search = "";
@@ -130,6 +201,7 @@ export function Characters() {
 								onChange={(event) => {
 									setFilterByStatus(event.target.value);
 									setPage(1);
+									refetch();
 								}}
 							>
 								{statuses &&
@@ -172,20 +244,24 @@ export function Characters() {
 					{data.error && (
 						<p style={{ color: "#fff", fontSize: "28px" }}>{data.error}</p>
 					)}
-					{data &&
-						data.results &&
+					{data && data.results &&
 						data.results.map((character) => (
 							<Grid key={character.id} item xs={6} xl={4}>
-								<CharacterBlock key={character.id} character={character} height="220px" />
+								<CharacterBlock
+									key={character.id}
+									character={character}
+									height="220px"
+								/>
 							</Grid>
 						))}
 				</Grid>
 				<StyledPagination
 					sx={{ marginBottom: 2, color: "#fff" }}
-					count={data && data.info ? data.info.pages : 0}
+					count={data.info  ? data.info.pages : 0}
 					page={page}
 					onChange={(event, value) => {
 						setPage(value);
+						refetch();
 					}}
 				></StyledPagination>
 			</Container>

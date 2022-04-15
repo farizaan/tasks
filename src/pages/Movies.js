@@ -21,6 +21,10 @@ export function Movies() {
 	useEffect(() => {
 		// loadDefaultMovies();
 		searchMovies();
+
+		return () => {
+			window.scrollTo(0,0)
+		}
 	}, []);
 	function searchMovies({ page = 1, sort = sortValue } = {}) {
 		// e && e.preventDefault();

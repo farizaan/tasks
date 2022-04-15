@@ -23,8 +23,16 @@ const pages = [
 		ll: "/movies",
 	},
 	{
-		title: "Rick and Morty",
+		title: "Rick&Morty",
 		ll: "/rickandmorty",
+	},
+	{
+		title: "Counter",
+		ll: "/counter",
+	},
+	{
+		title: "ToDo",
+		ll: "/todo",
 	},
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];

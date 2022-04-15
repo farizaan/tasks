@@ -60,6 +60,12 @@ export function MoviePage() {
 	useEffect(() => {
 		fetchFilmById(movieId).then((res) => setMovie(res));
 		fetchSimilarFilmsById(movieId).then((res) => setSimilarMovies(res.results));
+
+		return () => {
+			window.scrollTo(0,0)
+			document.getElementById("movies").scrollTop = 0
+			document.getElementById("movies").scrollLeft = 0
+		}
 	}, [movieId]);
 	return (
 		<div>
@@ -83,7 +89,7 @@ export function MoviePage() {
 					<SimTitle>Similar movies</SimTitle>
 
 					
-					<div style={{ display: "flex", overflowX: "scroll", width: "100%" }}>
+					<div id="movies" style={{ display: "flex", overflowX: "scroll", width: "100%" }}>
 						{similarMovies &&
 							similarMovies.map((movie, i) => (
                                 <div  key ={i} style={{minWidth: "292px", display: "flex", marginRight: "16px", transition: '0.2s'}}>
