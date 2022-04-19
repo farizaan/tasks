@@ -1,51 +1,82 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { fetchFilms } from "../fetchers/fetchFilms";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { Movie } from "../components/Movie";
 import { Button, Checkbox, Pagination, TextField } from "@mui/material";
-import styled from "@emotion/styled";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMovies } from "../store/actions/fetchMovies";
+import {
+	SET_MOVIES,
+	SET_MOVIES_SORT_BY,
+	SET_QUERY,
+} from "../store/reducers/movies";
 export function Movies() {
-	const [movies, setMovies] = useState([]);
-	const [query, setQuery] = useState("");
+	const movies = useSelector((state) => state.movies.movies);
+	const query = useSelector((state) => state.movies.query);
+	const sortValue = useSelector((state) => state.movies.sortValue);
+	const pageInfo = useSelector((state) => state.movies.pageInfo);
+	const dispatch = useDispatch();
 	const [includeAdult, setIncludeAdult] = useState(false);
-	const [sortValue, setSortValue] = useState("popularity.desc");
-	const [pageInfo, setPageInfo] = useState({
-		currentPage: 1,
-		totalPages: 0,
-	});
 	useEffect(() => {
-		// loadDefaultMovies();
-		searchMovies();
-
+		// console.log("use effect",movies)
+		// searchMovies();
+		dispatch(fetchMovies());
 		return () => {
-			window.scrollTo(0,0)
-		}
-	}, []);
-	function searchMovies({ page = 1, sort = sortValue } = {}) {
-		// e && e.preventDefault();
-		console.log("Search");
-		let method = "discover";
-		if (query && query.length > 0) {
-			method = "search";
-		}
-		fetch(
-			`https://api.themoviedb.org/3/${method}/movie?api_key=d65708ab6862fb68c7b1f70252b5d91c&language=ru-RU&sort_by=${sort}&include_adult=false&include_video=${includeAdult}&page=${page}&with_watch_monetization_types=flatrate&query=${query}`
-		)
-			.then((response) => response.json())
-			.then((resp) => {
-				setMovies(resp.results);
-				setPageInfo({
-					currentPage: resp.page,
-					totalPages: Math.min(resp.total_pages, 500),
-				});
-			})
-			.catch((err) => console.error(err));
+			window.scrollTo(0, 0);
+		};
+	}, [dispatch]);
+
+	function setMovies(movies) {
+		dispatch({ type: SET_MOVIES, payload: movies });
 	}
+	const setQuery = useCallback(
+		(query) => {
+			dispatch({ type: SET_QUERY, payload: query });
+		},
+		[dispatch]
+	);
+	const setSortValue = useCallback(
+		(sort) => {
+			dispatch({ type: SET_MOVIES_SORT_BY, payload: sort });
+		},
+		[dispatch]
+	);
+	function setPageInfo(pageInfo) {
+		dispatch({ type: "movies/setPageInfo", payload: pageInfo });
+	}
+	console.log("pageInfo", pageInfo);
+	const searchMovies = useCallback(
+		({ page,sort = sortValue } = {}) => {
+			dispatch(fetchMovies({ query, page, sort }));
+		},
+		[dispatch, query, sortValue]
+	);
+	// function searchMovies({ page = 1, sort = sortValue } = {}) {
+	// 	// dispatch({type: 'movies/searchMovies',page: page})
+	// 	// e && e.preventDefault();
+	// 	// console.log("Search");
+	// 	// let method = "discover";
+	// 	// if (query && query.length > 0) {
+	// 	// 	method = "search";
+	// 	// }
+	// 	// fetch(
+	// 	// 	`https://api.themoviedb.org/3/${method}/movie?api_key=d65708ab6862fb68c7b1f70252b5d91c&language=ru-RU&sort_by=${sort}&include_adult=false&include_video=${includeAdult}&page=${page}&with_watch_monetization_types=flatrate&query=${query}`
+	// 	// )
+	// 	// 	.then((response) => response.json())
+	// 	// 	.then((resp) => {
+	// 	// 		setMovies(resp.results);
+	// 	// 		setPageInfo({
+	// 	// 			currentPage: resp.page,
+	// 	// 			totalPages: Math.min(resp.total_pages, 500),
+	// 	// 		});
+	// 	// 	})
+	// 	// 	.catch((err) => console.error(err));
+	// }
 
 	const sortTypes = [
 		{
@@ -96,22 +127,24 @@ export function Movies() {
 							searchMovies();
 						}}
 					>
-						<FormControl >
+						<FormControl>
 							<InputLabel id="demo-simple-select-label">Sort by</InputLabel>
 							<Select
 								labelId="demo-simple-select-label"
 								id="demo-simple-select"
 								value={sortValue}
 								label="Sortby"
-								disabled={query && query.length > 0}
+								// disabled={query && query.length > 0}
 								onChange={(event) => {
 									setSortValue(event.target.value);
 									searchMovies({ sort: event.target.value });
 								}}
 							>
 								{sortTypes &&
-									sortTypes.map((sort) => (
-										<MenuItem value={sort.value}>{sort.title}</MenuItem>
+									sortTypes.map((sort, i) => (
+										<MenuItem key={i} value={sort.value}>
+											{sort.title}
+										</MenuItem>
 									))}
 							</Select>
 						</FormControl>
@@ -125,23 +158,23 @@ export function Movies() {
 							placeholder="Search"
 							onChange={(e) => setQuery(e.target.value)}
 						/>
+						<Button type="submit">Search</Button>
 					</form>
-					<Button onClick={() => searchMovies()}>Search</Button>
 				</div>
 			</div>
 
 			<Grid container spacing={2} sx={{ justifyContent: "center" }}>
 				{console.log(movies)}
 				{movies.map((movie, i) => (
-					<Grid item xs={12 / 5} key={i}>
-						<Movie movie={movie} key={i} />
+					<Grid item xs={12 / 5} key={movie.id}>
+						<Movie movie={movie} key={movie.id} />
 					</Grid>
 				))}
 			</Grid>
 			<Pagination
 				sx={{ marginTop: 2 }}
-				count={pageInfo.totalPages}
-				page={pageInfo.currentPage}
+				count={pageInfo.total_pages}
+				page={pageInfo.page}
 				onChange={(event, value) => {
 					searchMovies({ page: value });
 				}}

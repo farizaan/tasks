@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 export function Todo() {
 
 	const dispatch = useDispatch()
-	const todos = useSelector(state => state.todos)
+	const todos = useSelector(state => state.todos.todos)
 	// const [todoList, setTodoList] = useState(
 	// 	JSON.parse(localStorage.getItem("todos")) || []
 	// );
