@@ -4,6 +4,7 @@ import thunk from "redux-thunk";
 import { movies } from "./reducers/movies";
 import { todos } from "./reducers/todos";
 import { rickandmorty } from "./reducers/rickandmorty";
+import { shop } from "./reducers/shop";
 // const initialValue = {
 // 	todos: JSON.parse(localStorage.getItem("todos")) || [],
 // 	movies: [],
@@ -48,6 +49,6 @@ import { rickandmorty } from "./reducers/rickandmorty";
 // 	return newState;
 // };
 export const store = createStore(
-	combineReducers({ movies, todos, rickandmorty }),
+	combineReducers({ movies, todos, rickandmorty ,shop}),
 	composeWithDevTools(applyMiddleware(thunk))
 );

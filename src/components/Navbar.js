@@ -34,6 +34,10 @@ const pages = [
 		title: "ToDo",
 		ll: "/todo",
 	},
+	{
+		title: "Shop",
+		ll: "/shop",
+	},
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 // const pages = ['Home', 'Fibbonacci', 'Factorial'];

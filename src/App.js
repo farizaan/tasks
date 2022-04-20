@@ -13,6 +13,8 @@ import { Auth } from "./context/Auth";
 import { Counter } from "./components/Counter";
 import { Home } from "./pages/Home";
 import { Todo } from "./pages/todo/TodoPage";
+import { Shop } from "@mui/icons-material";
+import { ShopPage } from "./pages/shop/ShopPage";
 const queryClient = new QueryClient();
 function App() {
 
@@ -35,6 +37,7 @@ function App() {
 						<Route path="/signin" element={<SignInPage />} />
 						<Route path="/counter" element={<Counter />} />
 						<Route path="/todo" element={<Todo />} />
+						<Route path="/shop" element={<ShopPage />} />
 					</Routes>
 				</QueryClientProvider>
 			</div>
