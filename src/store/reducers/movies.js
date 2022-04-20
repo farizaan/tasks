@@ -9,6 +9,9 @@ const initialState = {
 		page: 1,
 		total_pages: 0,
 	},
+	movie: {},
+	similarMovies: [],
+	isLoading: true
 };
 
 export const movies = function moviesReducer(state = initialState, action) {
@@ -26,7 +29,14 @@ export const movies = function moviesReducer(state = initialState, action) {
 		case "movies/setPageInfo":
 			newState.pageInfo = action.payload;
 			break;
-
+		case "movies/setMovie":
+			newState.movie = action.payload;
+			break;
+		case "movies/setSimilarMovies":
+			newState.similarMovies = action.payload;
+			break;
+		case "movies/setLoading":
+			newState.isLoading = action.payload
 		default:
 			return state;
 	}

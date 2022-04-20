@@ -5,6 +5,8 @@ import styled from "@emotion/styled";
 import Container from "@mui/material/Container";
 import { Stars } from "../components/Movie";
 import { Movie } from "../components/Movie";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMovieById, fetchSimilarMoviesById } from "../store/actions/fetchMovies";
 
 const Banner = styled("div")`
 	width: 100%;
@@ -31,11 +33,11 @@ const SimTitle = styled("p")`
 	font-size: 34px;
 	color: #fff;
 	margin: 0;
-    margin-bottom: 16px
+	margin-bottom: 16px;
 `;
 
 const SimilarMoviesBlock = styled("div")`
-	background: #1D1D1D;;
+	background: #1d1d1d;
 	padding: 30px 0;
 `;
 const styles = {
@@ -54,18 +56,24 @@ const styles = {
 };
 export function MoviePage() {
 	let { movieId } = useParams();
-	const [movie, setMovie] = useState({});
-	const [similarMovies, setSimilarMovies] = useState([]);
+	const dispatch = useDispatch();
+	const movie = useSelector((state) => state.movies.movie);
+	const similarMovies = useSelector(state => state.movies.similarMovies)
+	// const [movie, setMovie] = useState({});
+	// const [similarMovies, setSimilarMovies] = useState([]);
 
 	useEffect(() => {
-		fetchFilmById(movieId).then((res) => setMovie(res));
-		fetchSimilarFilmsById(movieId).then((res) => setSimilarMovies(res.results));
+		console.log(movieId);
+		dispatch(fetchMovieById({movieId}));
+		dispatch(fetchSimilarMoviesById({movieId}))
+		// fetchFilmById(movieId).then((res) => setMovie(res));
+		// fetchSimilarFilmsById(movieId).then((res) => setSimilarMovies(res.results));
 
 		return () => {
-			window.scrollTo(0,0)
-			document.getElementById("movies").scrollTop = 0
-			document.getElementById("movies").scrollLeft = 0
-		}
+			window.scrollTo(0, 0);
+			document.getElementById("movies").scrollTop = 0;
+			document.getElementById("movies").scrollLeft = 0;
+		};
 	}, [movieId]);
 	return (
 		<div>
@@ -88,14 +96,23 @@ export function MoviePage() {
 				<Container maxWidth="xl">
 					<SimTitle>Similar movies</SimTitle>
 
-					
-					<div id="movies" style={{ display: "flex", overflowX: "scroll", width: "100%" }}>
-						{similarMovies &&
-							similarMovies.map((movie, i) => (
-                                <div  key ={i} style={{minWidth: "292px", display: "flex", marginRight: "16px", transition: '0.2s'}}>
-                                    <Movie movie={movie} key={i} />
-                                </div>
-                            ))}
+					<div
+						id="movies"
+						style={{ display: "flex", overflowX: "scroll", width: "100%" }}
+					>
+						{similarMovies?.map((movie, i) => (
+							<div
+								key={i}
+								style={{
+									minWidth: "292px",
+									display: "flex",
+									marginRight: "16px",
+									transition: "0.2s",
+								}}
+							>
+								<Movie movie={movie} key={i} />
+							</div>
+						))}
 					</div>
 				</Container>
 			</SimilarMoviesBlock>
