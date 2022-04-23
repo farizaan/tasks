@@ -4,18 +4,15 @@ import {
 	INCREMENT_PRODUCT,
 	REMOVE_ALL_FROM_BASKET,
 	REMOVE_FROM_BASKET,
+	SET_LOADING,
 	SET_PRODUCTS,
-	SET_TOTAL,
 	UPDATE_PRODUCT,
 } from "../actions/shopActions";
 
 const initState = {
 	products: [],
 	basket: JSON.parse(localStorage.getItem("basket")) || [],
-	total: {
-		count: 0,
-		price: 0,
-	},
+	isLoading: true,
 };
 export function shop(state = initState, action) {
 	const newState = { ...state };
@@ -72,16 +69,9 @@ export function shop(state = initState, action) {
 				p.id === action.payload ? { ...p, quantity: action.count } : p
 			);
 			break;
-		case SET_TOTAL:
-			newState.total.count = newState.basket.reduce(
-				(acc, item) => acc + +item.quantity,
-				0
-			);
-			newState.total.price = newState.basket.reduce(
-				(acc, item) => acc + item.quantity * item.price,
-				0
-			);
-			break;
+		case SET_LOADING:
+				newState.isLoading = action.payload;
+				break;
 		default:
 			return state;
 	}
