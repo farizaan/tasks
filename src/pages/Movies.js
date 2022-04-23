@@ -164,9 +164,8 @@ export function Movies() {
 			</div>
 
 			<Grid container spacing={2} sx={{ justifyContent: "center" }}>
-				{console.log(movies)}
 				{movies.map((movie, i) => (
-					<Grid item xs={12/5} key={movie.id}>
+					<Grid item xl={12/5} md={4} sm={6} xs={12} key={movie.id}>
 						<Movie movie={movie} key={movie.id} />
 					</Grid>
 				))}
