@@ -195,7 +195,7 @@ export function Characters() {
 						<p style={{ color: "#fff", fontSize: "28px" }}>{data.error}</p>
 					)} */}
 					{characters?.map((character) => (
-						<Grid key={character.id} item xs={6} xl={4}>
+						<Grid key={character.id} item xs={12} sm={6} md={4}>
 							<CharacterBlock
 								key={character.id}
 								character={character}
