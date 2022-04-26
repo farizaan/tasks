@@ -5,6 +5,7 @@ import { useCallback, useEffect } from "react";
 import { ProductBlock } from "../../components/shop/ProductBlock";
 import { Basket } from "../../components/shop/Basket";
 import CircularProgress from "@mui/material/CircularProgress";
+import {OrderFormModal} from "../../components/shop/OrderFormModal"
 export function ShopPage() {
 	const dispatch = useDispatch();
 	const products = useSelector((state) => state.shop.products);
@@ -41,6 +42,8 @@ export function ShopPage() {
 					</Grid>
 				)}
 			</Container>
+			<OrderFormModal></OrderFormModal>
+			
 		</div>
 	);
 }

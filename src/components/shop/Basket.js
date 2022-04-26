@@ -2,11 +2,13 @@ import styled from "@emotion/styled";
 import { useCallback, useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
 import {
 	decrementProduct,
 	DECREMENT_PRODUCT,
 	incrementProduct,
 	INCREMENT_PRODUCT,
+	OPEN_MODAL,
 	removeAllProducts,
 	removeProduct,
 	REMOVE_FROM_BASKET,
@@ -14,7 +16,7 @@ import {
 } from "../../store/actions/shopActions";
 import { BasketItem } from "./BasketItem";
 import CloseIcon from "@mui/icons-material/Close";
-import { Badge, Box, Drawer } from "@mui/material";
+import { Badge, Box, Button, Drawer } from "@mui/material";
 const Wrapper = styled("div")`
 	position: fixed;
 	z-index: 1000;
@@ -80,6 +82,14 @@ const NoItems = styled("div")`
 		flex-direction: column;
 	}
 `;
+const Footer = styled("div")`
+	bottom: 0;
+	position: sticky;
+	background: #f3f3f7;
+	text-align: center;
+	padding: 16px;
+	margin-top: auto;
+`;
 export function Basket() {
 	const dispatch = useDispatch();
 
@@ -124,6 +134,9 @@ export function Basket() {
 		dispatch(removeAllProducts());
 	}, [dispatch]);
 
+	const handleModalOpen = useCallback(() => {
+		dispatch({ type: OPEN_MODAL });
+	}, [dispatch]);
 	return (
 		<>
 			<Wrapper>
@@ -156,7 +169,14 @@ export function Basket() {
 					}}
 				>
 					{basket.length > 0 ? (
-						<>
+						<div
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								height: "100%",
+								position: "relative"
+							}}
+						>
 							<Section
 								style={{
 									display: "flex",
@@ -206,7 +226,16 @@ export function Basket() {
 									<p className="summa">{totalInfo.price.toFixed(2)}$</p>
 								</Subtotal>
 							</SubtotalSection>
-						</>
+							<Footer>
+								<Button
+									onClick={handleModalOpen}
+									variant="outlined"
+									sx={{ marginTop: "auto", width: "50%", alignSelf: "center" }}
+								>
+									Оформить заказ
+								</Button>
+							</Footer>
+						</div>
 					) : (
 						<NoItems>
 							<div>

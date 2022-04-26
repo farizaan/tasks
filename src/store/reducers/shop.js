@@ -1,7 +1,9 @@
 import {
 	ADD_TO_BASKET,
+	CLOSE_MODAL,
 	DECREMENT_PRODUCT,
 	INCREMENT_PRODUCT,
+	OPEN_MODAL,
 	REMOVE_ALL_FROM_BASKET,
 	REMOVE_FROM_BASKET,
 	SET_LOADING,
@@ -13,6 +15,7 @@ const initState = {
 	products: [],
 	basket: JSON.parse(localStorage.getItem("basket")) || [],
 	isLoading: true,
+	modalOpen: false
 };
 export function shop(state = initState, action) {
 	const newState = { ...state };
@@ -70,8 +73,14 @@ export function shop(state = initState, action) {
 			);
 			break;
 		case SET_LOADING:
-				newState.isLoading = action.payload;
-				break;
+			newState.isLoading = action.payload;
+			break;
+		case OPEN_MODAL:
+			newState.modalOpen = true;
+			break;
+		case CLOSE_MODAL:
+			newState.modalOpen = false;
+			break;
 		default:
 			return state;
 	}

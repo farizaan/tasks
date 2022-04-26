@@ -8,6 +8,9 @@ export const DECREMENT_PRODUCT = "shop/decrementProduct";
 export const INCREMENT_PRODUCT = "shop/incrementProduct";
 export const SET_TOTAL = "shop/setTotal";
 export const SET_LOADING = "shop/setLoading";
+export const OPEN_MODAL = "shop/openModal";
+export const CLOSE_MODAL = "shop/closeModal";
+
 export const fetchProducts = () => (dispatch) => {
 	axios.get(`https://fakestoreapi.com/products`).then((res) => {
 		console.log(res);

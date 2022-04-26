@@ -39,6 +39,7 @@ const Description = styled("p")`
 	color: rgb(92, 99, 112);
 	margin: 0px;
 	white-space: pre-wrap;
+	text-overflow: ellipsis;
 	font-size: 12px;
 `;
 const Bottom = styled("div")`
